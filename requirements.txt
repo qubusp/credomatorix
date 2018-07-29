@@ -1,0 +1,4 @@
+simplejson 
+boto3
+kubernetes
+kubernetes-py
