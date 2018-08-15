@@ -1,10 +1,37 @@
-apiVersion: v1
-kind: Pod
+apiVersion: batch/v2alpha1
+kind: CronJob
 metadata:
-  name: nginx
+  name: aws-registry-credential-cron
 spec:
-  containers:
-  - name: credomatorix
-    image: credomatorix:latest
-    secret:
-      secretName: <your-aws-credentials-secret>
+  schedule: "* */8 * * *"
+  successfulJobsHistoryLimit: 2
+  failedJobsHistoryLimit: 2
+  jobTemplate:
+    spec:
+      backoffLimit: 4
+      template:
+        spec:
+          serviceAccountName: <XXXXXXXXXXX-SERVICE-ACCCOUNT-THAT-CAN-DELETE-AND-UPDATE-SECRETS>
+          terminationGracePeriodSeconds: 0
+          restartPolicy: Never
+          containers:
+          - name: credomatorix
+            image: qubusp/credomatorix
+            imagePullPolicy: IfNotPresent
+            env:
+               - name: AWS_USER
+                 valueFrom:
+                   secretKeyRef:
+                     name: aws_credentials
+                     key: username
+               - name: AWS_PWD
+                 valueFrom:
+                   secretKeyRef:
+                    name: aws_credentials
+                    key: password
+               - name: K8S_CRED
+                 valueFrom:
+                   secretKeyRef:
+                    name: k8s_credentials
+                    key: cert
+              command:
