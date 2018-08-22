@@ -4,8 +4,8 @@ from base64 import b64decode
 from kubernetes import client, config
 from pprint import pprint
 import docker
-import os
-import argparse
+
+
 
 recr = boto3.client('ecr',
     region_name='eu-central-1'
