@@ -5,7 +5,9 @@ from kubernetes import client, config
 from pprint import pprint
 import docker
 import os
-ecr = boto3.client('ecr',
+import argparse
+
+recr = boto3.client('ecr',
     region_name='eu-central-1'
 )
 

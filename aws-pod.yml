@@ -14,17 +14,25 @@ spec:
           serviceAccountName: <XXXXXXXXXXX-SERVICE-ACCCOUNT-THAT-CAN-DELETE-AND-UPDATE-SECRETS>
           terminationGracePeriodSeconds: 0
           restartPolicy: Never
+          volumes:
+            - name: docker-sock-volume
+              hostPath:
+                # location on host
+                path: /var/run/docker.sock
           containers:
           - name: credomatorix
             image: qubusp/credomatorix
+            volumeMounts:
+              - mountPath: /var/run/docker.sock
+                name: docker-sock-volume
             imagePullPolicy: IfNotPresent
             env:
-               - name: AWS_USER
+               - name: aws_access_key_id
                  valueFrom:
                    secretKeyRef:
                      name: aws_credentials
                      key: username
-               - name: AWS_PWD
+               - name: aws_secret_access_key
                  valueFrom:
                    secretKeyRef:
                     name: aws_credentials
@@ -34,4 +42,3 @@ spec:
                    secretKeyRef:
                     name: k8s_credentials
                     key: cert
-              command:

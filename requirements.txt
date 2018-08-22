@@ -1,5 +1,5 @@
 simplejson
 boto3
 kubernetes
-kubernetes-py
-docker 
+docker
+pyyaml==3.12
