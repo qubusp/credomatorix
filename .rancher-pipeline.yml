@@ -1,0 +1,10 @@
+stages:
+- name: build
+  steps:
+  - publishImageConfig:
+      dockerfilePath: ./Dockerfile
+      buildContext: .
+      tag: credomatorix-test
+      pushRemote: true
+      registry: registry.socifi:9000
+timeout: 60
